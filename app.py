@@ -15,14 +15,19 @@ CORS(app)
 
 @app.route('/min/<url>')
 def getmin(url):
-    favicon = get("http://"+url)
-    if favicon[-1].width > 0:
-        icon = favicon[-1].url
-    else:
-        try:
-            icon = favicon[-2].url
-        except:
+    try:
+        favicon = get("http://"+url)
+        if favicon[-1].width > 0:
             icon = favicon[-1].url
+        else:
+            try:
+                icon = favicon[-2].url
+            except:
+                icon = favicon[-1].url
+        if icon == "" or icon == None or icon == " ":
+            icon = "https://cdn.js0.ch/placeholder.png"
+    except:
+        icon = "https://cdn.js0.ch/placeholder.png"
     return(f"{icon}")
 
 @app.route('/max/<url>')
