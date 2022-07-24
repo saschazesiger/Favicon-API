@@ -29,6 +29,8 @@ def getmin(url):
 def getmax(url):
     favicon = get("http://"+url)
     icon = favicon[0].url
+    if icon == "" or icon == None or icon == " ":
+        icon = "https://cdn.js0.ch/placeholder.png"
     return(f"{icon}")
 
 __all__ = ['get', 'Icon']
