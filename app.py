@@ -27,9 +27,12 @@ def getmin(url):
 
 @app.route('/max/<url>')
 def getmax(url):
-    favicon = get("http://"+url)
-    icon = favicon[0].url
-    if icon == "" or icon == None or icon == " ":
+    try:
+        favicon = get("http://"+url)
+        icon = favicon[0].url
+        if icon == "" or icon == None or icon == " ":
+            icon = "https://cdn.js0.ch/placeholder.png"
+    except:
         icon = "https://cdn.js0.ch/placeholder.png"
     return(f"{icon}")
 
