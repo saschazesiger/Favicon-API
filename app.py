@@ -9,6 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "o85bQT4qNOp8Sb91UKQui4z5Uu0Leh0C"
 CORS(app)
