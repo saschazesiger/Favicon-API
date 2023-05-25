@@ -13,11 +13,14 @@ from bs4 import BeautifulSoup
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "o85bQT4qNOp8Sb91UKQui4z5Uu0Leh0C"
 CORS(app)
+response = ""
 
 @app.route('/min/<url>')
 def getmin(url):
     try:
         favicon = get("http://"+url)
+        response_size = round(int(len(response.content) / 1000))
+        ping = round(int(response.elapsed.total_seconds() * 1000))
         icon = favicon[-1].url
         if favicon[-1].width == 0:
             if favicon[-1].format != 'ico':
@@ -25,22 +28,12 @@ def getmin(url):
                     icon = favicon[-2].url
                 except:
                     icon = favicon[-1].url
-        if icon == "" or icon == None or icon == " ":
-            icon = "https://cdn.js0.ch/placeholder.png"
+        if icon == None or icon == " ":
+            icon = ""
     except:
-        icon = "https://cdn.js0.ch/placeholder.png"
-    return(f"{icon}")
+        icon = ""
+    return({"icon":icon,"response_code":response.status_code,"ping":ping,"response_size":response_size})
 
-@app.route('/max/<url>')
-def getmax(url):
-    try:
-        favicon = get("http://"+url)
-        icon = favicon[0].url
-        if icon == "" or icon == None or icon == " ":
-            icon = "https://cdn.js0.ch/placeholder.png"
-    except:
-        icon = "https://cdn.js0.ch/placeholder.png"
-    return(f"{icon}")
 
 __all__ = ['get', 'Icon']
 
@@ -65,6 +58,7 @@ Icon = namedtuple('Icon', ['url', 'width', 'height', 'format'])
 
 
 def get(url, *args, **request_kwargs):
+    global response
     if args:
         warnings.warn(
             DeprecationWarning
